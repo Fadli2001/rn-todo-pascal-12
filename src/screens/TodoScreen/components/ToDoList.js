@@ -1,11 +1,13 @@
 import { StyleSheet, FlatList, View } from "react-native";
 import Todo from "./Todo";
 import EmptyListView from "./EmptyListView";
+import { useSelector } from "react-redux";
 
-export default function ToDoList(props) {
-  const { todos, toggleComplete, deleteTodo, type } = props;
+export default function ToDoList() {
+  const todos = useSelector((state) => state.ToDoReducer.todos);
+  const todoType = useSelector((state) => state.ToDoReducer.type);  
 
-  const getVisisibleTodos = () => {
+  const getVisisibleTodos = (todos, type) => {
     switch (type) {
       case "All":
         return todos;
@@ -16,21 +18,19 @@ export default function ToDoList(props) {
     }
   };
 
+  let selectedTodos = getVisisibleTodos(todos, todoType);
+
   return (
-    <View>
+    <View style={{
+      paddingHorizontal : 10
+    }}>
       <FlatList
-        data={getVisisibleTodos()}
+        data={selectedTodos}
         renderItem={({ item }) => {
-          return (
-            <Todo
-              todo={item}
-              toggleComplete={toggleComplete}
-              deleteTodo={deleteTodo}
-            />
-          );
+          return <Todo todo={item} />;
         }}
         keyExtractor={(item) => item.id.toString()}
-        ListEmptyComponent={() => <EmptyListView todoType={type} />}
+        ListEmptyComponent={() => <EmptyListView todoType={todoType} />}
       />
     </View>
   );

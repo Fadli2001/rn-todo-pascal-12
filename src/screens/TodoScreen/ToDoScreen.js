@@ -7,58 +7,40 @@ import TabBar from "./components/TabBar";
 import ToDoList from "./components/ToDoList";
 import Input from "../../shared/components/Input";
 import SubmitButton from "../../shared/components/SubmitButton";
-
-const todoDummy = [
-  { id: 1, title: "Olahraga", complete: true },
-  { id: 2, title: "Ngoding", complete: false },
-  { id: 3, title: "Ngopskuy", complete: true },
-];
+import { useDispatch, useSelector } from "react-redux";
+import { addTodo, setTodoName } from "../../store/todo/ToDoAction";
 
 export default function ToDoScreen() {
-  const [appState, setAppState] = useState({
-    type: "All",
-    todos: [...todoDummy],
-    inputValue: "",
-  });  
+  const dispatch = useDispatch();
+  const todoName = useSelector((state) => state.ToDoReducer.newTodoName);
 
-  const setType = (type) => {
-    setAppState({ ...appState, type });
-  };
-
-  const toggleComplete = (todoIndex) => {
-    const { todos } = appState;
-    todos.forEach((todo) => {
-      if (todo.id === todoIndex) {
-        todo.complete = !todo.complete;
+  const currId = useSelector((state) => {
+    let maxId = 0;
+    state.ToDoReducer.todos.forEach((todo) => {
+      if (todo.id > maxId) {
+        maxId = todo.id;
       }
     });
+    return maxId;
+  });
 
-    setAppState({ ...appState, todos });
-  };
-
-  const deleteTodo = (todoIndex) => {
-    const { todos: currentTodos } = appState;
-    const newTodos = currentTodos.filter((todo) => todo.id !== todoIndex);
-    setAppState({ ...appState, todos: newTodos });
+  const onSetTodoName = (val) => {
+    dispatch(setTodoName(val));
   };
 
   const submitTodo = () => {
-    const trimInput = appState.inputValue.trim();
+    const trimInput = todoName.trim();
+    // check input jika kosoong || check minimal 4 karakter
     if (trimInput === "" || trimInput.length < 4) {
       Alert.alert("Invalid Input", "Please Correct input");
     } else {
       const payload = {
-        title: appState.inputValue,
+        title: todoName,
         complete: false,
-        id: appState.todos.length + 1,
+        id: currId + 1,
       };
-      const todos = [...appState.todos, payload];
-      setAppState({ ...appState, todos, inputValue: "" });
+      dispatch(addTodo(payload));
     }
-  };
-
-  const onChangeValue = (val) => {
-    setAppState({ ...appState, inputValue: val });
   };
 
   return (
@@ -76,7 +58,7 @@ export default function ToDoScreen() {
               paddingHorizontal: 5,
             }}
           >
-            <Input value={appState.inputValue} onChangeValue={onChangeValue} />
+            <Input value={todoName} onChangeValue={onSetTodoName} />
           </View>
           <View
             style={{
@@ -99,17 +81,12 @@ export default function ToDoScreen() {
 
       {/* list  */}
       <View style={styles.listSection}>
-        <ToDoList
-          todos={appState.todos}
-          deleteTodo={deleteTodo}
-          toggleComplete={toggleComplete}
-          type={appState.type}          
-        />
+        <ToDoList />
       </View>
 
       {/* tabBar */}
       <View style={styles.tabBarSection}>
-        <TabBar type={appState.type} setType={setType} />
+        <TabBar />
       </View>
     </View>
   );
