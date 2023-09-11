@@ -13,7 +13,7 @@ import SubmitButton from "../../shared/components/SubmitButton";
 
 import PATH from "../../navigation/NavigationPath";
 
-export default function ProductForm({ navigation }) {
+export default function LoginForm({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
