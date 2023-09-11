@@ -12,7 +12,7 @@ const ToDoReducer = (state = initialState, action) => {
   switch (action.type) {
     case "ADD_TODO":
       return {
-        ...state,
+        ...state, // salin data
         newTodoName: "",
         todos: [...state, action.payload],
       };
