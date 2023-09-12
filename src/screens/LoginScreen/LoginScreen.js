@@ -7,19 +7,43 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import loginStyles from "./LoginScreen.style";
 import SubmitButton from "../../shared/components/SubmitButton";
 
 import PATH from "../../navigation/NavigationPath";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../store/login/LoginAction";
+import { showLoading } from "../../store/AppAction";
+import Loading from "../../shared/components/Loading";
 
 export default function LoginForm({ navigation }) {
+  const dispatch = useDispatch();
+  const isLogin = useSelector((state) => state.LoginReducer.isLoggedIn);
+
+  const isLoading = useSelector((state) => state.AppReducer.isLoading);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const [inputErrors, setInputErrors] = useState({
     isValidUsername: "",
     isValidPassword: "",
+  });
+
+  useEffect(() => {    
+    if (isLogin) {
+      dispatch(showLoading(true));
+      setTimeout(() => {
+        navigation.replace(PATH.TODO_LIST);
+        dispatch(showLoading(false));
+      }, 1000);
+      // dispatch(showLoading(true))
+      // navigation.navigate() -> menjadi tumpukan stack -> able to back page
+      // navigation.replace() -> replace current stack -> unable to back page
+    } else {
+      dispatch(showLoading(false));
+    }
   });
 
   const validateInputs = () => {
@@ -39,9 +63,7 @@ export default function LoginForm({ navigation }) {
     if (Object.keys(errors).length > 0) {
       setInputErrors(errors);
     } else if (username === "enigma" && password === "123") {
-      setTimeout(() => {
-        navigation.navigate(PATH.TODO_LIST);
-      }, 1000);
+      dispatch(login(true));
     } else {
       Alert.alert("Incorrect", "Invalid Username or Password");
     }

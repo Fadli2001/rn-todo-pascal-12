@@ -7,8 +7,8 @@ export default function SplashScreen({navigation}) {
 
     React.useEffect( () => {
         setTimeout(() => {
-            navigation.navigate(PATH.LOGIN)
-        }, 3000);
+            navigation.replace(PATH.LOGIN)
+        }, 2000);
     },[])
 
   return (

@@ -1,4 +1,4 @@
-import { ADD_TODO, CHANGE_TYPE, SET_TODO_NAME } from "../../utils/constant"
+import { ADD_TODO, CHANGE_TYPE, DELETE_TODO, SET_TODO_NAME, TOGGLE_COMPLETE } from "../../utils/constant"
 
 const addTodo = (newTodo) => {
     return { 
@@ -21,8 +21,24 @@ const setTodoName = (text) => {
     }
 }
 
+const toggleComplete = (id) => {
+    return {
+        type : TOGGLE_COMPLETE,
+        payload : id
+    }
+}
+
+const deleteTodo = (id) => {
+    return {
+        type : DELETE_TODO,
+        payload : id
+    }
+}
+
 export {
     addTodo,
     changeType,
-    setTodoName
+    setTodoName,
+    toggleComplete,
+    deleteTodo
 }
