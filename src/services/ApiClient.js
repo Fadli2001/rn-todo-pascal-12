@@ -3,7 +3,7 @@ import LocalStorage from "../utils/LocalStorage";
 import { GLobalError, UnauthorizedError } from "../utils/AppError";
 
 const client = axios.create({
-  baseURL: "http://10.10.100.114:8888",
+  baseURL: "http://192.168.0.103:8888",
 });
 
 client.interceptors.request.use(async (config) => {
@@ -16,11 +16,10 @@ client.interceptors.request.use(async (config) => {
   return config;
 });
 
-const apiClient = async ({ url, method, param = null }) => {
-  try {
-    console.log("Param", param);
-    const result = await client[method](url, param);
-    console.log("ayolaaah result", result.data);
+const apiClient = async ({ url, method, params = null }) => {
+  try {    
+    const result = await client[method](url, params);
+    // console.log("ayolaaah result", result.data);
     return result;
   } catch (error) {
     if (error.response) {

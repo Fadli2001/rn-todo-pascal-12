@@ -1,6 +1,6 @@
 import { LOGIN, LOGOUT } from "../../utils/constant";
 
-function login() {
+function loginAction() {
   return {
     type: LOGIN
   };
@@ -12,4 +12,4 @@ function logout() {
   };
 }
 
-export { login, logout };
+export { loginAction, logout };
