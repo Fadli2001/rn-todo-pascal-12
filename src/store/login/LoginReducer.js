@@ -8,11 +8,11 @@ const LoginReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN:
       return {
-        isLoggedIn: action.payload,
+        isLoggedIn: true
       };
     case LOGOUT:
       return {
-        isLoggedIn: !action.payload,
+        isLoggedIn: true,
       };
     default:
       return state;

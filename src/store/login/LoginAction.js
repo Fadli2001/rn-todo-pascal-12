@@ -1,16 +1,14 @@
 import { LOGIN, LOGOUT } from "../../utils/constant";
 
-function login(isLogin) {
+function login() {
   return {
-    type: LOGIN,
-    payload: isLogin,
+    type: LOGIN
   };
 }
 
-function logout(isLogout) {
+function logout() {
   return {
-    type: LOGOUT,
-    payload: isLogout,
+    type: LOGOUT
   };
 }
 

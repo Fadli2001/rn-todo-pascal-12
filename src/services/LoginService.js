@@ -7,12 +7,13 @@ const LoginService = () => {
     try {
       const data = await apiClient({
         method: "post",
-        url: "/auth/login",
+        url: "/users/login",
         param: {
           email: email,
-          password: email,
+          password: password,
         },
       });
+      // console.log(data);
       await LocalStorage().setData("token", data);
     } catch (error) {
       throw error;
