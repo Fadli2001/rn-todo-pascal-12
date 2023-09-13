@@ -2,6 +2,7 @@ import {
   ADD_TODO,
   CHANGE_TYPE,
   DELETE_TODO,
+  SET_TODO,
   SET_TODO_NAME,
   TOGGLE_COMPLETE,
 } from "../../utils/constant";
@@ -60,6 +61,11 @@ const ToDoReducer = (state = initialState, action) => {
       return {
         ...state,
         todos: newTodos,
+      };
+    case SET_TODO:
+      return {
+        ...state,
+        todos: action.payload,
       };
     default:
       return state;

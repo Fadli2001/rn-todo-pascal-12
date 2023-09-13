@@ -6,7 +6,8 @@ const CHANGE_TYPE = "CHANGE_TYPE";
 const SET_TODO_NAME = "SET_TODO_NAME";
 const LOGIN = "LOGIN";
 const LOGOUT = "LOGOUT";
-const SHOW_ERROR = 'SHOW_ERROR'
+const SHOW_ERROR = "SHOW_ERROR";
+const SET_TODO = "SET_TODO";
 
 export {
   SHOW_LOADING,
@@ -17,5 +18,6 @@ export {
   SET_TODO_NAME,
   LOGIN,
   LOGOUT,
-  SHOW_ERROR
+  SHOW_ERROR,
+  SET_TODO,
 };

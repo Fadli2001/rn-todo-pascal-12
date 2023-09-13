@@ -10,6 +10,8 @@ import PopupMenu from "../screens/TodoScreen/components/PopupMenu";
 import { navigationRef } from "./RootNavigation";
 import { Login } from "../screens/LoginScreen/Login";
 import LoginService from "../services/LoginService";
+import { ToDo } from "../screens/TodoScreen/Todo";
+import ToDoService from "../services/TodoService";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,11 +24,8 @@ const AppNavigation = () => {
           component={SplashScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name={PATH.LOGIN}
-          options={{ headerShown: false }}
-        >
-          {() => <LoginScreen login={() => Login(LoginService)}/>}
+        <Stack.Screen name={PATH.LOGIN} options={{ headerShown: false }}>
+          {() => <LoginScreen login={() => Login(LoginService)} />}
         </Stack.Screen>
         <Stack.Group
           screenOptions={({ navigation }) => {
@@ -45,11 +44,9 @@ const AppNavigation = () => {
             };
           }}
         >
-          <Stack.Screen
-            name={PATH.TODO_LIST}
-            component={ToDoScreen}
-            options={{ title: "Todos" }}
-          />
+          <Stack.Screen name={PATH.TODO_LIST} options={{ title: "Todos" }}>
+            {() => <ToDoScreen todo={() => ToDo(ToDoService)} />}
+          </Stack.Screen>
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

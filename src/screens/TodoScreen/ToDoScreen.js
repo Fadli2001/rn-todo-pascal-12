@@ -1,5 +1,5 @@
 import { Text, View, TextInput, Button, Alert } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React from "react";
 
 import styles from "./ToDoScreen.style";
@@ -8,12 +8,13 @@ import ToDoList from "./components/ToDoList";
 import Input from "../../shared/components/Input";
 import SubmitButton from "../../shared/components/SubmitButton";
 import { useDispatch, useSelector } from "react-redux";
-import { addTodo, setTodoName } from "../../store/todo/ToDoAction";
+import { addTodo, setTodo, setTodoName } from "../../store/todo/ToDoAction";
 import { showLoading } from "../../store/AppAction";
 
-export default function ToDoScreen() {
+export default function ToDoScreen({ todo }) {
+  const { onLoadTodo, onSubmitTodo, onDeleteTodo } = todo();
   const dispatch = useDispatch();
-  const todoName = useSelector((state) => state.ToDoReducer.newTodoName);
+  const todoName = useSelector((state) => state.ToDoReducer.newTodoName);  
 
   const currId = useSelector((state) => {
     let maxId = 0;
@@ -28,6 +29,14 @@ export default function ToDoScreen() {
   const onSetTodoName = (val) => {
     dispatch(setTodoName(val));
   };
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const todos = await onLoadTodo();      
+      dispatch(setTodo(todos.data.data));
+    };
+    fetchData();
+  }, []);
 
   const submitTodo = () => {
     const trimInput = todoName.trim();
@@ -50,11 +59,6 @@ export default function ToDoScreen() {
 
   return (
     <View style={styles.container}>
-      {/* heading  */}
-      {/* <View style={styles.headerSection}>
-        <Heading />
-      </View> */}
-      {/* form add list  */}
       <View style={styles.formSection}>
         <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
           <View

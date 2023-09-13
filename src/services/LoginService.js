@@ -5,15 +5,15 @@ const LoginService = () => {
   const { apiClient } = useDeps();
   const login = async (email, password) => {
     try {
-      const data = await apiClient({
+      const result = await apiClient({
         method: "post",
         url: "/users/login",
         params: {
           email: email,
           password: password,
         },
-      });            
-      await LocalStorage().setData("token", data.data.token);
+      });      
+      await LocalStorage().setData("token", result.data.data.token);
     } catch (error) {
       throw error;
     }

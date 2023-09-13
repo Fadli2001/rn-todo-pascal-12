@@ -9,7 +9,10 @@ const LocalStorage = () => {
 
   const getData = async (key) => {
     try {
-      const value = await AsyncStorage.getItem(key);
+      const value = await AsyncStorage.getItem(key);      
+      if (value !== null) {
+        return value;
+      }
     } catch (e) {}
   };
 
@@ -26,4 +29,4 @@ const LocalStorage = () => {
   };
 };
 
-export default LocalStorage
+export default LocalStorage;

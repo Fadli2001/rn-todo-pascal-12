@@ -15,8 +15,9 @@ import styles from "./PopupMenu.style";
 import { useDispatch } from "react-redux";
 import { logout } from "../../../store/login/LoginAction";
 import { showLoading } from "../../../store/AppAction";
+import { onNavigate } from "../../../navigation/RootNavigation";
 
-const PopupMenu = ({ navigation }) => {
+const PopupMenu = () => {
   const dispatch = useDispatch();
 
   const [isModalVisible, setIsModalVisible] = React.useState(false);
@@ -26,8 +27,11 @@ const PopupMenu = ({ navigation }) => {
     dispatch(showLoading(true));
     setTimeout(() => {
       dispatch(logout(true));
-      navigation.replace(PATH.LOGIN);
-      dispatch(showLoading(true));
+      onNavigate({
+        routeName: PATH.LOGIN,
+        isReplace: true,
+      });
+      dispatch(showLoading(false));
     }, 1000);
   };
 

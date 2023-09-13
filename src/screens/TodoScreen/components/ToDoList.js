@@ -4,26 +4,28 @@ import EmptyListView from "./EmptyListView";
 import { useSelector } from "react-redux";
 
 export default function ToDoList() {
-  const todos = useSelector((state) => state.ToDoReducer.todos);
-  const todoType = useSelector((state) => state.ToDoReducer.type);  
+  const todosReducer = useSelector((state) => state.ToDoReducer.todos);  
+  const todoType = useSelector((state) => state.ToDoReducer.type);
 
   const getVisisibleTodos = (todos, type) => {
     switch (type) {
       case "All":
-        return todos;
+        return todos
       case "Complete":
-        return todos.filter((todo) => todo.complete);
+        return todos.filter((todo) => todo.isCompleted);
       case "Active":
-        return todos.filter((todo) => !todo.complete);
+        return todos.filter((todo) => !todo.isCompleted);
     }
   };
 
-  let selectedTodos = getVisisibleTodos(todos, todoType);
+  let selectedTodos = getVisisibleTodos(todosReducer, todoType);
 
   return (
-    <View style={{
-      paddingHorizontal : 10
-    }}>
+    <View
+      style={{
+        paddingHorizontal: 10,
+      }}
+    >
       <FlatList
         data={selectedTodos}
         renderItem={({ item }) => {
