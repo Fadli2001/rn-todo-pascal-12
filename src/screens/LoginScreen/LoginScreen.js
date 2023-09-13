@@ -21,8 +21,6 @@ export default function LoginForm({ navigation }) {
   const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.LoginReducer.isLoggedIn);
 
-  const isLoading = useSelector((state) => state.AppReducer.isLoading);
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 

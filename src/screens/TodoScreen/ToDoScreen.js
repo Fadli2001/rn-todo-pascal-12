@@ -9,6 +9,7 @@ import Input from "../../shared/components/Input";
 import SubmitButton from "../../shared/components/SubmitButton";
 import { useDispatch, useSelector } from "react-redux";
 import { addTodo, setTodoName } from "../../store/todo/ToDoAction";
+import { showLoading } from "../../store/AppAction";
 
 export default function ToDoScreen() {
   const dispatch = useDispatch();
@@ -39,7 +40,11 @@ export default function ToDoScreen() {
         complete: false,
         id: currId + 1,
       };
-      dispatch(addTodo(payload));
+      dispatch(showLoading(true));
+      setTimeout(() => {
+        dispatch(addTodo(payload));
+        dispatch(showLoading(false));
+      }, 1000);
     }
   };
 
