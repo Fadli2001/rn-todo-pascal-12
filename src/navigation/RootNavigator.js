@@ -7,12 +7,15 @@ import PATH from "./NavigationPath";
 import ToDoScreen from "../screens/TodoScreen/ToDoScreen";
 import LoginScreen from "../screens/LoginScreen/LoginScreen";
 import PopupMenu from "../screens/TodoScreen/components/PopupMenu";
+import { navigationRef } from "./RootNavigation";
+import { Login } from "../screens/LoginScreen/Login";
+import LoginService from "../services/LoginService";
 
 const Stack = createNativeStackNavigator();
 
 const AppNavigation = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <Stack.Navigator initialRouteName={PATH.SPLASH}>
         <Stack.Screen
           name={PATH.SPLASH}
@@ -21,9 +24,10 @@ const AppNavigation = () => {
         />
         <Stack.Screen
           name={PATH.LOGIN}
-          component={LoginScreen}
           options={{ headerShown: false }}
-        />
+        >
+          {() => <LoginScreen login={() => Login(LoginService)}/>}
+        </Stack.Screen>
         <Stack.Group
           screenOptions={({ navigation }) => {
             return {
@@ -37,14 +41,14 @@ const AppNavigation = () => {
               },
               headerShadowVisible: false,
               headerRight: () => <PopupMenu navigation={navigation} />,
-              headerLeft: () => <View />              
+              headerLeft: () => <View />,
             };
           }}
         >
           <Stack.Screen
             name={PATH.TODO_LIST}
             component={ToDoScreen}
-            options={{ title: "Todos" }}            
+            options={{ title: "Todos" }}
           />
         </Stack.Group>
       </Stack.Navigator>

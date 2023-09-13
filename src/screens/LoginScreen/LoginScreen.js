@@ -1,69 +1,46 @@
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  Image,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { Text, TextInput, View, Image } from "react-native";
 import React, { useEffect, useState } from "react";
 import loginStyles from "./LoginScreen.style";
 import SubmitButton from "../../shared/components/SubmitButton";
 
-import PATH from "../../navigation/NavigationPath";
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../store/login/LoginAction";
-import { showLoading } from "../../store/AppAction";
-import Loading from "../../shared/components/Loading";
+import { useSelector } from "react-redux";
+import MessageBox from "../../shared/components/MessageBox";
 
-export default function LoginForm({ navigation }) {
-  const dispatch = useDispatch();
-  const isLogin = useSelector((state) => state.LoginReducer.isLoggedIn);
+export default function LoginForm({ login }) {
+  const { onAuthenticate, onDismissError } = login();
+  const error = useSelector((state) => state.AppReducer.errorMessage);
 
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [inputErrors, setInputErrors] = useState({
-    isValidUsername: "",
+    isValidEmail: "",
     isValidPassword: "",
-  });
-
-  useEffect(() => {    
-    if (isLogin) {
-      dispatch(showLoading(true));
-      setTimeout(() => {
-        navigation.replace(PATH.TODO_LIST);
-        dispatch(showLoading(false));
-      }, 1000);
-      // dispatch(showLoading(true))
-      // navigation.navigate() -> menjadi tumpukan stack -> able to back page
-      // navigation.replace() -> replace current stack -> unable to back page
-    } else {
-      dispatch(showLoading(false));
-    }
   });
 
   const validateInputs = () => {
     const errors = {};
-    if (username.trim() === "") {
-      errors.isValidUsername = "Username or email is required";
+    if (email.trim() === "") {
+      errors.isValidEmail = "Username or email is required";
     }
     if (password.trim() === "") {
       errors.isValidPassword = "Password is required";
     }
     return errors;
   };
+  useEffect(() => {
+    if (error) {
+      MessageBox("Error", error.message, onDismissError).showAlert();
+    }
+  }, [error]);
 
   const submitLogin = () => {
     const errors = validateInputs();
 
     if (Object.keys(errors).length > 0) {
       setInputErrors(errors);
-    } else if (username === "enigma" && password === "123") {
-      dispatch(login(true));
     } else {
-      Alert.alert("Incorrect", "Invalid Username or Password");
+      onAuthenticate(email, password);
     }
   };
 
@@ -95,16 +72,16 @@ export default function LoginForm({ navigation }) {
           <Text style={loginStyles.label}>Email</Text>
           <TextInput
             onChangeText={(val) => {
-              setUsername(val);
+              setEmail(val);
               setInputErrors({
                 ...inputErrors,
-                isValidUsername: "",
+                isValidEmail: "",
               });
             }}
-            placeholder="Username or Email"
+            placeholder="Email"
             style={loginStyles.input}
           />
-          {isErrorView(inputErrors.isValidUsername)}
+          {isErrorView(inputErrors.isValidEmail)}
           <Text style={loginStyles.label}>Password</Text>
           <TextInput
             onChangeText={(val) => {

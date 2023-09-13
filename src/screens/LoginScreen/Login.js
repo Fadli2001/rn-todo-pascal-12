@@ -1,0 +1,31 @@
+import { useDispatch } from "react-redux";
+import { showError, showLoading } from "../../store/AppAction";
+import { onNavigate } from "../../navigation/RootNavigation";
+import PATH from "../../navigation/NavigationPath"
+
+export const Login = (service) => {
+  const dispatch = useDispatch();
+  const { login } = service();
+
+  const onAuthenticate = async (email, password) => {
+    try {
+      dispatch(showLoading(true));
+      await login(email, password);
+      dispatch(login());
+      // onNavigate({
+      //   routeName: PATH.TODO_LIST,
+      //   isReplace: true,
+      // });
+    } catch (error) {      
+      dispatch(showError(error));
+    } finally {
+      dispatch(showLoading(false));
+    }
+  };
+
+  const onDismissError = () => dispatch(showError(""));
+  return {
+    onAuthenticate,
+    onDismissError,
+  };
+};
