@@ -36,22 +36,22 @@ export default function LoginForm({ login }) {
   }, [error]);
 
   const submitLogin = () => {
-    // const errors = validateInputs();
+    const errors = validateInputs();
 
-    // if (Object.keys(errors).length > 0) {
-    //   setInputErrors(errors);
-    // } else {
-    //   onAuthenticate(email, password);
-    // }
-    axios.post('http://10.10.100.114:8888/users/registration', {
-      email: 'coba',
-      password: 'lagi'
-    })
-    .then((response) => {
-      console.log(response.data);
-    }, (error) => {
-      console.log(error);
-    });
+    if (Object.keys(errors).length > 0) {
+      setInputErrors(errors);
+    } else {
+      onAuthenticate(email, password);
+    }
+    // axios.post('http://10.10.100.114:8888/users/registration', {
+    //   email: 'coba',
+    //   password: 'lagi'
+    // })
+    // .then((response) => {
+    //   console.log(response.data);
+    // }, (error) => {
+    //   console.log(error);
+    // });
 
   };
 

@@ -10,7 +10,7 @@ client.interceptors.request.use(async (config) => {
   if (config.url !== "/users/login") {
     const token = await LocalStorage().getData("token");
     config.headers = {
-      Authorization: `Bearer ${token}`,
+      'Authorization': `Bearer ${token}`,
     };
   }
   return config;
